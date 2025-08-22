@@ -40,7 +40,7 @@ let cachedConfig: StdApiConfig = defaultConfig;
 
 export function getConfig(): StdApiConfig {
   if (cachedConfig) return cachedConfig;
-  const filePath = path.resolve(process.cwd(), "std-api.config.json");
+  const filePath = path.resolve(process.cwd(), "api-stds.config.json");
   if (fs.existsSync(filePath)) {
     const userConfig = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     cachedConfig = { ...defaultConfig, ...userConfig };

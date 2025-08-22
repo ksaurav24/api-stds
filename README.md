@@ -1,23 +1,23 @@
 # api-stds
 
 A lightweight toolkit for standardizing API responses and improving developer experience in Node.js applications.  
-Includes async handler, configurable response formats, error normalization, request ID injection, and more, all customizable with `std-api.config.json`.
+Includes async handler, configurable response formats, error normalization, request ID injection, and more, all customizable with `api-stds.config.json`.
 
 ## Features
 
 - ⚡ Async handler, no more try/catch boilerplate.  
 - 📦 Standardized responses, consistent success/error payloads.  
-- 🛠 Config-driven, customize behavior via `std-api.config.json`.  
+- 🛠 Config-driven, customize behavior via `api-stds.config.json`.  
 - 🆔 Request ID support, opt-in correlation IDs for debugging.  
 - 📜 Error normalization, unify error shapes.  
-- 🔧 CLI, quick project setup via `npx std-api init`.  
+- 🔧 CLI, quick project setup via `npx api-stds init`.  
 
 ---
 
 ## Installation
 
 ```bash
-npm i std-api
+npm i api-stds
 ````
 
 ---
@@ -27,14 +27,14 @@ npm i std-api
 Run once per project:
 
 ```bash
-npx std-api init
+npx api-stds init
 ```
 
 This will:
 
-* Create a `std-api.config.json`
+* Create a `api-stds.config.json`
 * Prompt you for features (e.g. enable `requestId`)
-* Install `std-api` if not already installed
+* Install `api-stds` if not already installed
 
 ---
 
@@ -44,7 +44,7 @@ This will:
 
 ```ts
 import express from "express";
-import { asyncHandler, stdResponse } from "std-api";
+import { asyncHandler, stdResponse } from "api-stds";
 
 const app = express();
 
@@ -94,7 +94,7 @@ app.listen(3000, () => console.log("Server running on port 3000"));
 
 ## Configuration
 
-`std-api.config.json` (auto-generated with `npx std-api init`):
+`api-stds.config.json` (auto-generated with `npx api-stds init`):
 
 ```json
 {
