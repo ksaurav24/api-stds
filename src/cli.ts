@@ -27,10 +27,6 @@ const defaultConfig = {
     level: "info",
     format: "json"
   },
-  requestId: {
-    enabled: true,
-    headerName: "x-request-id"
-  }
 };
 
 function askQuestion(query: string): Promise<string> {
@@ -52,16 +48,8 @@ async function initConfig() {
     return;
   }
 
-  // Ask customization
-  const requestIdAnswer = await askQuestion("Enable requestId generation? (y/n): ");
-  const includeRequestId = requestIdAnswer.toLowerCase().startsWith("y");
-
   const config = {
     ...defaultConfig,
-    requestId: {
-      ...defaultConfig.requestId,
-      enabled: includeRequestId
-    }
   };
 
   fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
