@@ -1,0 +1,61 @@
+{
+  "name": "std-api",
+  "version": "1.0.0",
+  "description": "Standardized API response and error handling toolkit with async handler, requestId, logging, and configurable formats.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "bin": {
+    "std-api": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "std-api.config.json"
+  ],
+  "keywords": [
+    "api",
+    "response",
+    "standardization",
+    "express",
+    "middleware",
+    "error-handling",
+    "request-id",
+    "async-handler",
+    "logging"
+  ],
+  "author": "Saurav Kale <ksaurav4093@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.5.0",
+    "ts-node": "^10.9.2",
+    "eslint": "^9.5.0",
+    "prettier": "^3.3.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ksaurav24/std-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ksaurav24/std-api/issues"
+  },
+  "homepage": "https://github.com/ksaurav24/std-api#readme"
+}
