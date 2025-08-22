@@ -1,24 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { errorResponse } from "../core/responses.js";
+import { ApiError } from "./ApiError.js";
 
 export const asyncHandler =
   (fn: (req: any, res: any, next: any) => Promise<void>) =>
   (req: any, res: any, next: any) => {
     Promise.resolve(fn(req, res, next)).catch((error) => {
-      const statusCode = error?.statusCode || 500;
-      const message = error?.message || "Internal Server Error";
-      const errors = error?.erasyncHandlerrors || ["An unexpected error occurred"];
-      const requestId = res.locals?.requestId;
+      if (error instanceof ApiError) {
+        // If it's a custom ApiError, respect its shape
+        return errorResponse(
+          res,
+          error.statusCode,      // string
+          error.message,         // message
+          error.errors,          // details
+          { requestId: res.locals?.requestId } // meta
+        );
+      }
 
-      const apiError = errorResponse(
-        message,
-        statusCode,
-        errors,
-        requestId
+      // Fallback for unexpected errors
+      return errorResponse(
+        res,
+        "INTERNAL_ERROR",
+        error?.message || "Internal Server Error",
+        error?.details || ["An unexpected error occurred"],
+        { requestId: res.locals?.requestId }
       );
-
-      res.status(statusCode).json(apiError);
     });
   };
-
-
