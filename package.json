@@ -1,6 +1,6 @@
 {
   "name": "api-stds",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Standardized API response and error handling toolkit with async handler, requestId, logging, and configurable formats.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "test:watch": "vitest"
   },
   "bin": {
-    "std-api": "./dist/cli.js"
+    "api-stds": "./dist/cli.js"
   },
   "files": [
     "dist",
@@ -52,10 +52,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ksaurav24/std-api.git"
+    "url": "https://github.com/ksaurav24/api-stds.git"
   },
   "bugs": {
-    "url": "https://github.com/ksaurav24/std-api/issues"
+    "url": "https://github.com/ksaurav24/api-stds/issues"
   },
-  "homepage": "https://github.com/ksaurav24/std-api#readme"
+  "homepage": "https://github.com/ksaurav24/api-stds#readme"
 }
