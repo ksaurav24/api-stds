@@ -1,4 +1,4 @@
-import { getConfig } from "../config/config";
+import { getConfig } from "../config/config.js";
 import {Request, Response, NextFunction} from "express";
 export function asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) {
   const config = getConfig();

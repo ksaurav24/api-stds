@@ -1,5 +1,5 @@
-import { getConfig } from "../config/config";
-import { generateRequestId } from "./requestId";
+import { getConfig } from "../config/config.js";
+import { generateRequestId } from "./requestId.js";
 import {Response } from "express";
 export function successResponse(res: Response, data: any, meta: any = {}) {
   const config = getConfig();

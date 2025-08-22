@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { getConfig } from "../config/config";
+import { getConfig } from "../config/config.js";
 
 let registry: Record<string, { httpStatus: number; message: string }> = {};
 
