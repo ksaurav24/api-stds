@@ -69,11 +69,11 @@ async function initConfig() {
 
   // Auto install std-api
   try {
-    console.log("Installing std-api...");
-    execSync("npm install std-api", { stdio: "inherit" });
-    console.log("std-api installed successfully");
+    console.log("Installing api-stds...");
+    execSync("npm install api-stds", { stdio: "inherit" });
+    console.log("api-stds installed successfully");
   } catch (err) {
-    console.error("Failed to install std-api. Please run `npm install std-api` manually.");
+    console.error("Failed to install api-stds. Please run `npm install api-stds` manually.");
   }
 }
 
