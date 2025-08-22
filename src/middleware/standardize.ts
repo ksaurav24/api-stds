@@ -7,7 +7,7 @@ export function standardize(customConfig?: any) {
 
   return (req: Request, res: Response, next: NextFunction) => {
     if (config.requestId.enabled) {
-      res.locals.requestId = req.headers[config.requestId.headerName] || generateRequestId();
+      res.locals.requestId = req.header(config.requestId.headerName) || generateRequestId();
     }
 
     res.success = (data: any, meta?: any) => successResponse(res, data, meta);
