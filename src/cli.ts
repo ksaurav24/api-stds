@@ -4,7 +4,7 @@ import * as path from "path";
 import { execSync } from "child_process";
 import * as readline from "readline";
 
-const configFile = path.resolve(process.cwd(), "std-api.config.json");
+const configFile = path.resolve(process.cwd(), "api-stds.config.json");
 
 const defaultConfig = {
   response: {
@@ -48,7 +48,7 @@ function askQuestion(query: string): Promise<string> {
 
 async function initConfig() {
   if (fs.existsSync(configFile)) {
-    console.log("std-api.config.json already exists");
+    console.log("api-stds.config.json already exists");
     return;
   }
 
@@ -65,9 +65,9 @@ async function initConfig() {
   };
 
   fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-  console.log("🎉 Created std-api.config.json");
+  console.log("🎉 Created api-stds.config.json");
 
-  // Auto install std-api
+  // Auto install api-stds
   try {
     console.log("Installing api-stds...");
     execSync("npm install api-stds", { stdio: "inherit" });
@@ -80,8 +80,8 @@ async function initConfig() {
 function showHelp() {
   console.log(`
 Usage:
-  std-api init     Create std-api.config.json interactively and install std-api
-  std-api help     Show this help message
+  api-stds init     Create api-stds.config.json interactively and install api-stds
+  api-stds help     Show this help message
 `);
 }
 
