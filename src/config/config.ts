@@ -36,7 +36,7 @@ const defaultConfig: StdApiConfig = {
   requestId: { enabled: true, headerName: "x-request-id" }
 };
 
-let cachedConfig: StdApiConfig | null = null;
+let cachedConfig: StdApiConfig = defaultConfig;
 
 export function getConfig(): StdApiConfig {
   if (cachedConfig) return cachedConfig;
@@ -44,8 +44,6 @@ export function getConfig(): StdApiConfig {
   if (fs.existsSync(filePath)) {
     const userConfig = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     cachedConfig = { ...defaultConfig, ...userConfig };
-  } else {
-    cachedConfig = defaultConfig;
   }
   return cachedConfig;
 }

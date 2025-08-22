@@ -1,7 +1,7 @@
 import { getConfig } from "../config/config";
 import { generateRequestId } from "./requestId";
-
-export function successResponse(res, data: any, meta: any = {}) {
+import {Response } from "express";
+export function successResponse(res: Response, data: any, meta: any = {}) {
   const config = getConfig();
   const metaObj: any = {};
 
@@ -22,7 +22,7 @@ export function successResponse(res, data: any, meta: any = {}) {
   return res.json({ success: true, data, error: null, meta: { ...metaObj, ...meta } });
 }
 
-export function errorResponse(res, code: string, message: string, details: any = {}, meta: any = {}) {
+export function errorResponse(res: Response, code: string, message: string, details: any = {}, meta: any = {}) {
   const config = getConfig();
   const metaObj: any = {};
 

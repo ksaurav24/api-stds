@@ -1,8 +1,8 @@
 import { getConfig } from "../config/config";
-
-export function asyncHandler(fn: Function) {
+import {Request, Response, NextFunction} from "express";
+export function asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) {
   const config = getConfig();
-  return (req, res, next) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch((err) => {
       if (config.asyncHandler.logUnhandledErrors) {
         console.error("Unhandled error in asyncHandler:", err);

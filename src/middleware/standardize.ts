@@ -1,11 +1,11 @@
 import { successResponse, errorResponse } from "../core/responses";
 import { generateRequestId } from "../core/requestId";
 import { getConfig } from "../config/config";
-
+import { Request,Response,NextFunction } from "express";
 export function standardize(customConfig?: any) {
   const config = { ...getConfig(), ...customConfig };
 
-  return (req, res, next) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     if (config.requestId.enabled) {
       res.locals.requestId = req.headers[config.requestId.headerName] || generateRequestId();
     }
