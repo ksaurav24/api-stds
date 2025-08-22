@@ -1,120 +1,181 @@
+ 
 # api-stds
 
-A lightweight toolkit for standardizing API responses and improving developer experience in Node.js applications.  
-Includes async handler, configurable response formats, error normalization, request ID injection, and more, all customizable with `api-stds.config.json`.
+A lightweight utility library for **standardized API responses**, **async error handling**, and **configuration-driven response formatting** in Express.js applications.
+
+---
 
 ## Features
 
-- ⚡ Async handler, no more try/catch boilerplate.  
-- 📦 Standardized responses, consistent success/error payloads.  
-- 🛠 Config-driven, customize behavior via `api-stds.config.json`.  
-- 🆔 Request ID support, opt-in correlation IDs for debugging.  
-- 📜 Error normalization, unify error shapes.  
-- 🔧 CLI, quick project setup via `npx api-stds init`.  
+- ✅ Standardized JSON response format (`successResponse`, `errorResponse`)  
+- ✅ `asyncHandler` wrapper for safe async/await route handling  
+- ✅ `ApiError` class for consistent error throwing  
+- ✅ Middleware (`standardize`) to attach `res.success` and `res.error` methods  
+- ✅ Config-driven response metadata (timestamps, API version, etc.)  
+- ✅ Error registry support for consistent error codes/messages  
 
 ---
 
-## Installation
-
-```bash
-npm i api-stds
-````
-
----
-
-## Initialization
-
-Run once per project:
+## Quick Start
 
 ```bash
 npx api-stds init
-```
+````
 
-This will:
-
-* Create a `api-stds.config.json`
-* Prompt you for features (e.g. enable `requestId`)
-* Install `api-stds` if not already installed
+This will set up the package in your project.
 
 ---
 
-## Example Usage
+## Usage
 
-### Express Example
+### 1. Middleware Setup
 
 ```ts
 import express from "express";
-import { asyncHandler, stdResponse } from "api-stds";
+import { standardize } from "api-stds";
 
 const app = express();
 
-app.get(
-  "/user",
-  asyncHandler(async (req, res) => {
-    const user = { id: 1, name: "Captain" };
-    res.json(stdResponse.success(user));
-  })
-);
-
-app.get(
-  "/error",
-  asyncHandler(async () => {
-    throw new Error("Something went wrong!");
-  })
-);
-
-app.listen(3000, () => console.log("Server running on port 3000"));
+// Apply standardize middleware
+app.use(standardize());
 ```
 
-### Example Success Response
+This middleware extends the `res` object with:
 
-```json
-{
-  "status": "success",
-  "data": {
-    "id": 1,
-    "name": "Captain"
-  },
-  "requestId": "3f2d8a17-9d34-4c8c-8f2b-9a123c4c5a90"
-}
-```
-
-### Example Error Response
-
-```json
-{
-  "status": "error",
-  "message": "Something went wrong!",
-  "code": "INTERNAL_SERVER_ERROR",
-  "requestId": "3f2d8a17-9d34-4c8c-8f2b-9a123c4c5a90"
-}
+```ts
+res.success(data, meta?);
+res.error(code, message?, details?, meta?);
 ```
 
 ---
 
-## Configuration
+### 2. Success Response
 
-`api-stds.config.json` (auto-generated with `npx api-stds init`):
+```ts
+app.get("/ping", (req, res) => {
+  return res.success({ pong: true });
+});
+```
+
+**Response:**
 
 ```json
 {
-  "useRequestId": true,
-  "responseFormat": {
-    "successKey": "data",
-    "errorKey": "message",
-    "includeTimestamp": true
+  "success": true,
+  "data": { "pong": true },
+  "error": null,
+  "meta": {
+    "timestamp": 1734913293044,
+    "apiVersion": "v1"
   }
 }
 ```
 
 ---
 
-## Scripts
+### 3. Error Response
 
-```bash
-npm run build     # compile TypeScript → dist
-npm run test      # run unit tests
-npm run lint      # lint with ESLint
-npm run format    # format with Prettier
+```ts
+app.get("/error", (req, res) => {
+  return res.error("NOT_FOUND", "Resource not found", { resource: "User" });
+});
 ```
+
+**Response:**
+
+```json
+{
+  "success": false,
+  "data": null,
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Resource not found",
+    "details": { "resource": "User" }
+  },
+  "meta": {
+    "timestamp": 1734913293044,
+    "apiVersion": "v1"
+  }
+}
+```
+
 ---
+
+### 4. Async Handler
+
+```ts
+import { asyncHandler, ApiError } from "api-stds";
+
+app.get(
+  "/users/:id",
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) throw new ApiError("NOT_FOUND", "User not found");
+    return res.success(user);
+  })
+);
+```
+
+---
+
+### 5. ApiError Class
+
+```ts
+import { ApiError } from "api-stds";
+
+throw new ApiError("BAD_REQUEST", "Invalid input", [
+  { field: "email", message: "Email is required" },
+]);
+```
+
+---
+
+### 6. Config
+
+```ts
+app.use(
+  standardize({
+    response: {
+      includeMeta: true,
+      timestampFormat: "iso", // "unix" | "iso"
+      defaultApiVersion: "v2",
+      metaFields: ["timestamp", "apiVersion"],
+    },
+  })
+);
+```
+
+---
+
+### 7. Error Registry
+
+```ts
+import { loadErrorRegistry, getError } from "api-stds";
+
+loadErrorRegistry({
+  NOT_FOUND: "The resource was not found",
+  UNAUTHORIZED: "Unauthorized access",
+});
+
+res.error("NOT_FOUND", getError("NOT_FOUND"));
+```
+
+---
+
+## Response Format
+
+```json
+{
+  "success": boolean,
+  "data": object | null,
+  "error": {
+    "code": string,
+    "message": string,
+    "details": any
+  } | null,
+  "meta": {
+    "timestamp"?: number | string,
+    "apiVersion"?: string
+  }
+} 
+ 
